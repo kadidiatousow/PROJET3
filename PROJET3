@@ -1,0 +1,114 @@
+CREATE DATABASE PROJET3;
+use PROJET3;
+
+CREATE TABLE WINE ( 
+NumW int PRIMARY KEY NOT NULL,
+Category NVARCHAR (40) NOT NULL,
+Year DATE  NOT NULL,
+Degree FLOAT NOT NULL)
+
+CREATE TABLE PRODUCER(
+NumP int PRIMARY KEY NOT NULL,
+FirstName Nvarchar(40)NOT NULL,
+LastNAME NVARCHAR(40) NOT NULL,
+Region NVARCHAR(40) NOT NULL)
+
+CREATE TABLE HARVEST(
+Quantity int PRIMARY KEY NOT NULL,
+NumW int NOT NULL,
+NumP int NOT NULL,
+FOREIGN KEY (NumW  ) REFERENCES WINE (NumW ) ON DELETE NO ACTION,
+	FOREIGN KEY (NumP  ) REFERENCES PRODUCER (NumP) ON DELETE NO ACTION);
+
+
+INSERT INTO WINE VALUES (1, 'Rouge', '2019', 13.5)
+INSERT INTO WINE VALUES (2, 'Blanc', '2020', 12.0)
+INSERT INTO WINE VALUES(3, 'Rose', '2018', 11.5)
+INSERT INTO WINE VALUES(4, 'Red', '2021', 14.0)
+INSERT INTO WINE VALUES(5, 'Sparkling', '2017', 10.5)
+INSERT INTO WINE VALUES (6, 'Blanc', '2019', 12.5)
+INSERT INTO WINE VALUES(7, 'Rouge', '2022', 13.0)
+INSERT INTO WINE VALUES(8, 'Rose', '2020', 11.0)
+INSERT INTO WINE VALUES(9, 'Rouge', '2018', 12.0)
+INSERT INTO WINE VALUES (10, 'Sparkling', '2019', 10.0)
+INSERT INTO WINE VALUES(11, 'Blanc', '2021', 11.5)
+INSERT INTO WINE VALUES(12, 'Rouge', '2022', 15.0)
+
+INSERT INTO PRODUCER VALUES (1, 'John', 'Smith', 'Sousse')
+INSERT INTO PRODUCER VALUES (2, 'Emma', 'Johnson', 'Tunis')
+INSERT INTO PRODUCER VALUES(3, 'Michael', 'Williams', 'Sfax')
+INSERT INTO PRODUCER VALUES (4, 'Emily', 'Brown', 'Sousse')
+INSERT INTO PRODUCER VALUES(5, 'James', 'Jones', 'Sousse')
+INSERT INTO PRODUCER VALUES (6, 'Sarah', 'Davis', 'Tunis')
+INSERT INTO PRODUCER VALUES(7, 'David', 'Miller', 'Sfax')
+INSERT INTO PRODUCER VALUES (8, 'Olivia', 'Wilson', 'Monastir')
+INSERT INTO PRODUCER VALUES (9, 'Daniel', 'Moore', 'Sousse')
+INSERT INTO PRODUCER VALUES (10, 'Sophia', 'Taylor', 'Tunis')
+INSERT INTO PRODUCER VALUES (11, 'Matthieu', 'Anderson', 'Sfax')
+INSERT INTO PRODUCER VALUES (12, 'Amélia', 'Thomas', 'Sousse') 
+
+Question 4:
+SELECT * FROM PRODUCER;
+
+Question 5:
+SELECT FirstName FROM PRODUCER;
+
+Question 6:
+SELECT LastName FROM PRODUCER WHERE Region='Sousse';
+
+Question 7:
+	SELECT SUM(Quantity) AS QUANTITETOTAL
+	FROM HARVEST
+	WHERE NumW=12;
+
+Question 8:
+SELECT W.Category, SUM(H.Quantity) AS QUANTITETOTAL
+FROM WINE W
+JOIN HARVEST H ON W.NumW = H.NumW
+GROUP BY W.Category;
+
+Question 9:
+
+
+Question 10:
+	SELECT W.NumW 
+	FROM WINE W
+	JOIN 
+    HARVEST H ON W.NumW = H.NumW
+JOIN 
+    PRODUCER P ON H.NumP = P.NumP
+	WHERE P.NumP=24;
+
+Question 11:
+SELECT p.FirstName, p.LastNAME, MAX(h.Quantity) AS QUANTITEMAXIMALE
+FROM PRODUCER p
+JOIN HARVEST h ON p.NumP = h.NumP
+GROUP BY p.FirstName, p.LastNAME;
+
+Question 12:
+SELECT AVG(Degree) FROM WINE;
+
+Question 13:
+SELECT MIN(Annee) FROM WINE;
+
+Question 14:
+SELECT p.FirstName , SUM(Quantity) AS QUANTITETOTAL
+	FROM PRODUCER p
+	JOIN HARVEST H ON p.NumP = H.NumW
+	GROUP BY FirstName;
+
+Question 15:
+SELECT 
+    W.NumW, 
+    W.Category, 
+    W.Annee, 
+    W.Degree,
+    P.FirstName,
+    P.LastNAME,
+    P.Region
+FROM 
+    WINE W 
+JOIN 
+    HARVEST H ON W.NumW = H.NumW
+JOIN 
+    PRODUCER P ON H.NumP = P.NumP;
